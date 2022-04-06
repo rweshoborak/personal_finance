@@ -1,0 +1,18 @@
+{%extends 'accounts/partials/main.html'%}
+{% block content %}
+
+<br>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{product_form.as_p}}
+                <input type="submit" name="Submit" value="Submit">
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
