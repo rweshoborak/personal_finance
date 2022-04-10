@@ -27,12 +27,13 @@ def registrerPage(request):
                 user.groups.add(group)
 
                 Customer.objects.create(
-                    user = user,
+                    user=user,
                 )
                 messages.success(request, 'Account for "{}" was created successfully'.format(username))
                 return redirect('accounts:login')
         context = {'registerform': form}
         return render(request, 'accounts/register.html', context)
+
 
 @unauthenticated_user
 def loginPage(request):
@@ -47,7 +48,6 @@ def loginPage(request):
             return redirect('accounts:home')
         else:
             messages.info(request, "Usename OR Password is incorrect !!!")
-
 
     context = {}
     return render(request, 'accounts/login.html', context)
@@ -80,6 +80,7 @@ def home(request):
 
     return render(request, 'accounts/dashboard.html', context)
 
+
 @login_required(login_url='accounts:login')
 @allowedUsers(allowed_roles=['customer'])
 def userPage(request):
@@ -89,8 +90,8 @@ def userPage(request):
     pending = orders.filter(status='Pending').count()
     outdelivery = orders.filter(status='Out for Delivery').count()
     context = {
-        'orders':orders,
-        'total_orders':total_orders,
+        'orders': orders,
+        'total_orders': total_orders,
         'delivered': delivered,
         'pending': pending,
         'outdelivery': outdelivery,
@@ -103,13 +104,14 @@ def userPage(request):
 def accountSettings(request):
     customer = request.user.customer
     form = CustomerForm(instance=customer)
-    if request.method=='POST':
-        form =CustomerForm(request.POST,request.FILES, instance=customer, )
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, request.FILES, instance=customer, )
         if form.is_valid():
             form.save()
             return redirect('accounts:account')
-    context = {'form':form}
+    context = {'form': form}
     return render(request, 'accounts/account_settings.html', context)
+
 
 @login_required(login_url='accounts:login')
 @allowedUsers(allowed_roles=['admin'])
